@@ -1,28 +1,28 @@
 # DevRoast 🔥
 
-**Paste your code. Get roasted.**
+**Cole seu código. Leve uma bronca.**
 
-DevRoast uses AI to ruthlessly judge your code quality, style, and life choices — then gives you a score from 1 to 10 (lower is worse, and funnier).
+O DevRoast usa IA para julgar implacavelmente a qualidade do seu código, seu estilo e suas escolhas de vida — e te dá uma nota de 1 a 10 (quanto menor, mais constrangedor).
 
-## What it does
+## O que faz
 
-- **Paste any code snippet** into the editor and hit `$ roast_my_code`
-- **Get an AI-powered roast** with detailed analysis broken down by issue severity: critical bugs, warnings, and things that are surprisingly decent
-- **Receive a score** — a brutal 1–10 rating of your code quality
-- **See how you rank** on the shame leaderboard against other developers who dared to submit
+- **Cole qualquer trecho de código** no editor e clique em `$ roast_my_code`
+- **Receba um roast com IA** com análise detalhada por severidade: bugs críticos, avisos e o que foi surpreendentemente decente
+- **Ganhe uma nota** — uma avaliação brutal de 1 a 10 da qualidade do seu código
+- **Veja seu ranking** no leaderboard da vergonha contra outros devs corajosos o suficiente para enviar
 
-## Features
+## Funcionalidades
 
-- Code editor with line numbers and filename display
-- Per-issue analysis cards with severity levels (critical / warning / good)
-- Score ring showing your final rating with color-coded feedback
-- Shame leaderboard — the worst code rises to the top
-- Roast mode toggle for maximum sarcasm
+- Editor de código com numeração de linhas
+- Cards de análise por problema com níveis de severidade (crítico / aviso / bom)
+- Anel de pontuação com feedback visual colorido
+- Leaderboard da vergonha — o pior código sobe ao topo
+- Toggle de modo roast para sarcasmo máximo
 
 ## Leaderboard
 
-The leaderboard ranks submissions by score (lowest score = most roasted). Think of it as a hall of shame. Your `eval(userInput)` belongs there.
+O leaderboard ranqueia os envios por nota (menor nota = mais destruído). Pense como um hall da vergonha. Seu `eval(userInput)` pertence lá.
 
 ---
 
-> "Our AI will ruthlessly judge your code quality, style, and life choices."
+> "Nossa IA vai julgar implacavelmente a qualidade do seu código, seu estilo e suas escolhas de vida."

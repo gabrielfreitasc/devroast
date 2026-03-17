@@ -10,18 +10,10 @@
 ## Project Structure
 ```
 src/
-  app/
-    layout.tsx          # Root layout — loads fonts, renders <Navbar>
-    page.tsx            # Homepage (Server Component)
-    home-client.tsx     # "use client" interactive section of homepage
-    globals.css         # Tailwind entry + @theme tokens
-    components/         # /components route (UI showcase)
+  app/               # Next.js App Router — pages, layouts, route-specific client components
   components/
-    ui/                 # Small reusable primitives (Button, Badge, etc.)
-    analysis-card.tsx   # Composition: AnalysisCardRoot/Title/Description
-    code-editor.tsx     # Composition: CodeEditorRoot/Header/Input ("use client")
-    leaderboard-row.tsx # Composition: LeaderboardRowRoot/Rank/Score/Code/Language
-    score-ring.tsx      # SVG score ring
+    ui/              # Small reusable primitives (Button, Badge, Toggle, etc.)
+    *                # Page-level compositions (multi-piece components)
 ```
 
 ## Component Rules (see also `src/components/ui/AGENTS.md`)

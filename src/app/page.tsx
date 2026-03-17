@@ -16,10 +16,10 @@ const LEADERBOARD_DATA = [
 
 export default function Home() {
   return (
-    <main className="max-w-[1440px] mx-auto px-10 pt-20 pb-10 flex flex-col gap-8">
+    <main className="max-w-[1440px] mx-auto px-10 pt-20 pb-10 flex flex-col items-center gap-8">
 
       {/* Hero */}
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 w-[960px]">
         <div className="flex items-center gap-3">
           <span className="text-accent-green text-4xl font-bold">$</span>
           <span className="text-text-primary text-4xl font-bold">paste your code. get roasted.</span>
@@ -33,7 +33,7 @@ export default function Home() {
       <HomeClient />
 
       {/* Stats */}
-      <p className="text-text-tertiary text-sm">
+      <p className="text-text-tertiary text-sm w-[780px]">
         2,847 codes roasted · avg score: 4.2/10
       </p>
 
