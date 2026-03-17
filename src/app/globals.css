@@ -1,21 +1,103 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@source "../../src/**/*.{ts,tsx}";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Accents */
+  --color-accent-green: #10B981;
+  --color-accent-red: #EF4444;
+  --color-accent-amber: #F59E0B;
+  --color-accent-cyan: #06B6D4;
+
+  /* Backgrounds */
+  --color-bg-page: #0A0A0A;
+  --color-bg-surface: #0F0F0F;
+  --color-bg-elevated: #1A1A1A;
+  --color-bg-input: #111111;
+
+  /* Borders */
+  --color-border-primary: #2A2A2A;
+  --color-border-focus: #10B981;
+
+  /* Text */
+  --color-text-primary: #FAFAFA;
+  --color-text-secondary: #6B7280;
+  --color-text-tertiary: #4B5563;
+
+  /* Syntax highlighting */
+  --color-syn-function: #FFC799;
+  --color-syn-keyword: #A0A0A0;
+  --color-syn-string: #99FFE4;
+  --color-syn-number: #FFC799;
+  --color-syn-operator: #A0A0A0;
+  --color-syn-property: #A0A0A0;
+  --color-syn-type: #FFC799;
+  --color-syn-variable: #FFFFFF;
+
+  /* Diff */
+  --color-diff-removed-bg: #1A0A0A;
+  --color-diff-added-bg: #0A1A0F;
+
+  /* Fonts */
+  --font-sans: var(--font-jetbrains-mono), "JetBrains Mono", ui-monospace, monospace;
+  --font-serif: "IBM Plex Mono", ui-monospace, monospace;
+
+  /* Font size scale */
+  --text-2xs: 11px;
+  --text-2xs--line-height: 1.4;
+  --text-xs: 12px;
+  --text-xs--line-height: 1.4;
+  --text-sm: 13px;
+  --text-sm--line-height: 1.5;
+  --text-base: 14px;
+  --text-base--line-height: 1.5;
+  --text-lg: 16px;
+  --text-lg--line-height: 1.5;
+  --text-xl: 18px;
+  --text-xl--line-height: 1.4;
+  --text-2xl: 20px;
+  --text-2xl--line-height: 1.3;
+  --text-3xl: 24px;
+  --text-3xl--line-height: 1.3;
+  --text-4xl: 36px;
+  --text-4xl--line-height: 1.2;
+  --text-5xl: 48px;
+  --text-5xl--line-height: 1;
+  --text-display: 160px;
+  --text-display--line-height: 1;
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    background-color: var(--color-bg-page);
+    color: var(--color-text-primary);
   }
-}
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  * {
+    box-sizing: border-box;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg-surface);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border-primary);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-text-tertiary);
+  }
 }
