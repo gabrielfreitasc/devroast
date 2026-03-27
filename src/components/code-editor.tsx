@@ -1,11 +1,11 @@
 "use client";
 
-import { type ComponentProps, useRef } from "react";
+import { type ComponentProps } from "react";
 import { tv } from "tailwind-variants";
 import { LanguageSelector } from "@/components/ui/language-selector";
 
 const codeEditorRoot = tv({
-  base: "flex flex-col bg-bg-surface border border-border-primary rounded-lg overflow-hidden",
+  base: "flex flex-col bg-bg-surface border border-border-primary rounded-lg overflow-y-auto",
 });
 
 export function CodeEditorRoot({ className, children, ...props }: ComponentProps<"div">) {
@@ -34,7 +34,7 @@ export function CodeEditorHeader({
   return (
     <div
       className={tv({
-        base: "flex items-center gap-2 h-10 px-4 bg-bg-elevated border-b border-border-primary shrink-0",
+        base: "flex items-center gap-2 h-10 px-4 bg-bg-elevated border-b border-border-primary shrink-0 sticky top-0 z-10",
       })({ className })}
     >
       <span className="w-3 h-3 rounded-full bg-accent-red" />
@@ -53,6 +53,8 @@ export function CodeEditorHeader({
   );
 }
 
+export const MAX_CODE_LENGTH = 2_000;
+
 type CodeEditorInputProps = {
   code: string;
   onChange?: (value: string) => void;
@@ -69,20 +71,18 @@ export function CodeEditorInput({
   className,
 }: CodeEditorInputProps) {
   const lineCount = code.split("\n").length;
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
+  const charCount = code.length;
+  const isOverLimit = charCount > MAX_CODE_LENGTH;
 
-  function syncScroll() {
-    if (textareaRef.current && overlayRef.current) {
-      overlayRef.current.scrollTop = textareaRef.current.scrollTop;
-      overlayRef.current.scrollLeft = textareaRef.current.scrollLeft;
-    }
-  }
+  const contentHeight = `${lineCount * 24 + 24}px`; // 24px per line (leading-6) + 24px padding
 
   return (
-    <div className={tv({ base: "flex flex-1 overflow-hidden" })({ className })}>
+    <div className={tv({ base: "flex flex-col" })({ className })}>
       {/* Line numbers */}
-      <div className="flex flex-col items-end w-12 py-3 px-3 bg-bg-input shrink-0 select-none overflow-hidden">
+      <div
+        className="flex flex-col items-end w-12 px-3 bg-bg-input shrink-0 select-none pt-3"
+        style={{ minHeight: contentHeight }}
+      >
         {Array.from({ length: lineCount }, (_, i) => (
           <span key={i + 1} className="text-text-tertiary text-xs leading-6">
             {i + 1}
@@ -91,13 +91,12 @@ export function CodeEditorInput({
       </div>
 
       {/* Editor area: overlay + textarea stacked */}
-      <div className="relative flex-1 overflow-hidden">
+      <div className="relative flex-1" style={{ minHeight: contentHeight }}>
         {/* Shiki highlight overlay */}
         {highlightedHtml && (
           <div
-            ref={overlayRef}
             className={[
-              "absolute inset-0 overflow-auto pointer-events-none",
+              "absolute inset-0 pointer-events-none",
               "text-sm leading-6 font-mono p-3",
               "[&_pre]:m-0 [&_pre]:p-0 [&_pre]:bg-transparent! [&_pre]:leading-6 [&_pre]:text-sm [&_pre]:font-mono",
               "[&_code]:leading-6 [&_code]:text-sm [&_code]:font-mono",
@@ -108,18 +107,23 @@ export function CodeEditorInput({
 
         {/* Textarea */}
         <textarea
-          ref={textareaRef}
-          className="absolute inset-0 w-full h-full bg-transparent text-sm leading-6 resize-none outline-none p-3 font-mono"
+          className="absolute inset-0 w-full h-full bg-transparent text-sm leading-6 resize-none outline-none p-3 font-mono overflow-hidden"
           style={{ color: highlightedHtml ? "transparent" : undefined, caretColor: "white" }}
           value={code}
           onChange={(e) => onChange?.(e.target.value)}
           onPaste={onPaste}
-          onScroll={syncScroll}
           spellCheck={false}
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"
         />
+      </div>
+
+      {/* Char counter */}
+      <div className="flex justify-end px-3 py-1.5 shrink-0">
+        <span className={tv({ base: "text-xs font-mono tabular-nums", variants: { over: { true: "text-accent-red", false: "text-text-tertiary" } } })({ over: isOverLimit })}>
+          {charCount.toLocaleString()} / {MAX_CODE_LENGTH.toLocaleString()}
+        </span>
       </div>
     </div>
   );

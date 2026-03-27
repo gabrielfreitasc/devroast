@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { CodeEditorRoot, CodeEditorHeader, CodeEditorInput } from "@/components/code-editor";
+import { CodeEditorRoot, CodeEditorHeader, CodeEditorInput, MAX_CODE_LENGTH } from "@/components/code-editor";
 import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
 import { LANGUAGE_MAP } from "@/lib/languages";
@@ -60,7 +60,7 @@ export function HomeClient() {
   return (
     <>
       {/* Code Editor */}
-      <CodeEditorRoot className="w-[780px] h-[360px]">
+      <CodeEditorRoot className="w-[780px] min-h-[360px] max-h-[560px]">
         <CodeEditorHeader
           filename={filename}
           language={language}
@@ -82,7 +82,7 @@ export function HomeClient() {
           <span className="text-text-primary text-sm">roast mode</span>
           <span className="text-text-tertiary text-sm">// maximum sarcasm enabled</span>
         </div>
-        <Button variant="primary" size="lg">$ roast_my_code</Button>
+        <Button variant="primary" size="lg" disabled={code.length > MAX_CODE_LENGTH}>$ roast_my_code</Button>
       </div>
     </>
   );
