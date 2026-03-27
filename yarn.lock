@@ -735,6 +735,14 @@
   resolved "https://registry.yarnpkg.com/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-15.1.6.tgz#131993c45ffd124fb4b15258e2f3f9669c143e3c"
   integrity sha512-6xomMuu54FAFxttYr5PJbEfu96godcxBTRk1OhAvJq0/EnmFU/Ybiax30Snis4vdWZ9LGpf7Roy5fSs7v/5ROQ==
 
+"@number-flow/react@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@number-flow/react/-/react-0.6.0.tgz#343c522b3ebe118eaf631524351d2c4a17bd6ad2"
+  integrity sha512-77Yfc9+zkV2UDSP8phhZzxJGuwxi/Tt1TikmipL+1r3e9GFKEYDZ1XwInj67NoSt3OnOB0KLvvcl3lfPZgBHVQ==
+  dependencies:
+    esm-env "^1.1.4"
+    number-flow "0.6.0"
+
 "@shikijs/core@4.0.2":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@shikijs/core/-/core-4.0.2.tgz#386a00acc6965ced582e9066bfb237de7ee99174"
@@ -920,6 +928,33 @@
     postcss "^8.5.6"
     tailwindcss "4.2.1"
 
+"@tanstack/query-core@5.95.2":
+  version "5.95.2"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.95.2.tgz#9e3299d0c1c8785dd9e3d0cac1993e45f35113f2"
+  integrity sha512-o4T8vZHZET4Bib3jZ/tCW9/7080urD4c+0/AUaYVpIqOsr7y0reBc1oX3ttNaSW5mYyvZHctiQ/UOP2PfdmFEQ==
+
+"@tanstack/react-query@^5.95.2":
+  version "5.95.2"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.95.2.tgz#7daf77342a4e374c22fad88bb98ea13fc19ae086"
+  integrity sha512-/wGkvLj/st5Ud1Q76KF1uFxScV7WeqN1slQx5280ycwAyYkIPGaRZAEgHxe3bjirSd5Zpwkj6zNcR4cqYni/ZA==
+  dependencies:
+    "@tanstack/query-core" "5.95.2"
+
+"@trpc/client@^11.15.1":
+  version "11.15.1"
+  resolved "https://registry.yarnpkg.com/@trpc/client/-/client-11.15.1.tgz#ab7d4d80ac87452b3f14ef318de3ebce4e054c9f"
+  integrity sha512-Zav9uPSEM7zBlEbttKep1kCfxHumB7P/e/zVFspzfyeB6XYGVeILFeZVL6cnODkgUIFSzgO9X4fXRnn0BP/BhQ==
+
+"@trpc/server@^11.15.1":
+  version "11.15.1"
+  resolved "https://registry.yarnpkg.com/@trpc/server/-/server-11.15.1.tgz#4a9f8661df8d2bfa87f5bb5152fdca173287f5c8"
+  integrity sha512-0A1fIBU0zDLXaSOhuHOChqM4mCCCi233FcPdPNXJ+FIVMd5VEGe33u6cehUavZMquIi6uIec9xymac2P4LgqMA==
+
+"@trpc/tanstack-react-query@^11.15.1":
+  version "11.15.1"
+  resolved "https://registry.yarnpkg.com/@trpc/tanstack-react-query/-/tanstack-react-query-11.15.1.tgz#a4ffeea8a1e0be259362b412aa8397e2e0203afb"
+  integrity sha512-VKNGQVedAXpTb0f1K7E6q2FhlhrWw+Z0v75I9sQH9UfX4Vcd6pS70WH+xr41Epb8FrkLbDuNtZTVhBA0sPSWuw==
+
 "@tybys/wasm-util@^0.10.1":
   version "0.10.1"
   resolved "https://registry.yarnpkg.com/@tybys/wasm-util/-/wasm-util-0.10.1.tgz#ecddd3205cf1e2d5274649ff0eedd2991ed7f414"
@@ -1018,7 +1053,7 @@ character-entities-legacy@^3.0.0:
   resolved "https://registry.yarnpkg.com/character-entities-legacy/-/character-entities-legacy-3.0.0.tgz#76bc83a90738901d7bc223a9e93759fdd560125b"
   integrity sha512-RpPp0asT/6ufRm//AJVwpViZbGM/MkjQFxJccQRHmISF/22NBtsHqAWmL+/pmkPWoIUJdWyeVleTl1wydHATVQ==
 
-client-only@0.0.1:
+client-only@0.0.1, client-only@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/client-only/-/client-only-0.0.1.tgz#38bba5d403c41ab150bff64a95c85013cf73bca1"
   integrity sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==
@@ -1197,6 +1232,11 @@ esbuild@~0.27.0:
     "@esbuild/win32-arm64" "0.27.4"
     "@esbuild/win32-ia32" "0.27.4"
     "@esbuild/win32-x64" "0.27.4"
+
+esm-env@^1.1.4:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/esm-env/-/esm-env-1.2.2.tgz#263c9455c55861f41618df31b20cb571fc20b75e"
+  integrity sha512-Epxrv+Nr/CaL4ZcFGPJIYLWFom+YeV1DqMLHJoEd9SYRxNbaFruBwfEX/kkHUJf55j2+TUbmDcmuilbP1TmXHA==
 
 fsevents@~2.3.3:
   version "2.3.3"
@@ -1415,6 +1455,13 @@ next@15.1.6:
     "@next/swc-win32-x64-msvc" "15.1.6"
     sharp "^0.33.5"
 
+number-flow@0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/number-flow/-/number-flow-0.6.0.tgz#449240fac2f2ef250aee529ec6f2ec03307f3aea"
+  integrity sha512-K8flNq2Wqus53vjp/btVo3qXFkagF8dIdYavreBfE7hlvFFG/b1HMGEH6nZL+mlrJ+4lbLP9OmPv3t2rmRkpSQ==
+  dependencies:
+    esm-env "^1.1.4"
+
 oniguruma-parser@^0.12.1:
   version "0.12.1"
   resolved "https://registry.yarnpkg.com/oniguruma-parser/-/oniguruma-parser-0.12.1.tgz#82ba2208d7a2b69ee344b7efe0ae930c627dcc4a"
@@ -1590,6 +1637,11 @@ semver@^7.6.3:
   version "7.7.4"
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.7.4.tgz#28464e36060e991fa7a11d0279d2d3f3b57a7e8a"
   integrity sha512-vFKC2IEtQnVhpT78h1Yp8wzwrf8CM+MzKMHGJZfBtzhZNycRFnXsHk6E5TxIkkMsgNS7mdX3AGB7x2QM2di4lA==
+
+server-only@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/server-only/-/server-only-0.0.1.tgz#0f366bb6afb618c37c9255a314535dc412cd1c9e"
+  integrity sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==
 
 sharp@^0.33.5:
   version "0.33.5"
@@ -1812,6 +1864,11 @@ xtend@^4.0.0:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/xtend/-/xtend-4.0.2.tgz#bb72779f5fa465186b1f438f674fa347fdb5db54"
   integrity sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==
+
+zod@^4.3.6:
+  version "4.3.6"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-4.3.6.tgz#89c56e0aa7d2b05107d894412227087885ab112a"
+  integrity sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==
 
 zwitch@^2.0.4:
   version "2.0.4"

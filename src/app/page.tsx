@@ -7,6 +7,7 @@ import {
   LeaderboardRowLanguage,
 } from "@/components/leaderboard-row";
 import { Button } from "@/components/ui/button";
+import { StatsDisplay } from "@/components/stats-display";
 
 const LEADERBOARD_DATA = [
   { rank: 1, score: 1.2, codePreview: "eval(userInput + '= process')", language: "javascript" },
@@ -16,6 +17,7 @@ const LEADERBOARD_DATA = [
 
 export default function Home() {
   return (
+    <>
     <main className="max-w-[1440px] mx-auto px-10 pt-20 pb-10 flex flex-col items-center gap-8">
 
       {/* Hero */}
@@ -33,9 +35,7 @@ export default function Home() {
       <HomeClient />
 
       {/* Stats */}
-      <p className="text-text-tertiary text-sm w-[780px]">
-        2,847 codes roasted · avg score: 4.2/10
-      </p>
+      <StatsDisplay />
 
       {/* Leaderboard Preview */}
       <div className="flex flex-col gap-4 pt-10 w-[960px]">
@@ -70,5 +70,6 @@ export default function Home() {
       </div>
 
     </main>
+    </>
   );
 }

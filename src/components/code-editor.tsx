@@ -122,7 +122,7 @@ export function CodeEditorInput({
       {/* Char counter */}
       <div className="flex justify-end px-3 py-1.5 shrink-0">
         <span className={tv({ base: "text-xs font-mono tabular-nums", variants: { over: { true: "text-accent-red", false: "text-text-tertiary" } } })({ over: isOverLimit })}>
-          {charCount.toLocaleString()} / {MAX_CODE_LENGTH.toLocaleString()}
+          {charCount.toLocaleString("en-US")} / {MAX_CODE_LENGTH.toLocaleString("en-US")}
         </span>
       </div>
     </div>

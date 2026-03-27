@@ -1,4 +1,5 @@
 import { Navbar, NavbarLink } from "@/components/ui/navbar";
+import { TRPCReactProvider } from "@/trpc/client";
 import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import { FaCrown } from "react-icons/fa";
@@ -27,7 +28,7 @@ export default function RootLayout({
             <FaCrown className="rotate-icon" /> leaderboard
           </NavbarLink>
         </Navbar>
-        {children}
+        <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
     </html>
   );
