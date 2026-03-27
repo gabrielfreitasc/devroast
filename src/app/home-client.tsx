@@ -1,9 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CodeEditorRoot, CodeEditorHeader, CodeEditorInput } from "@/components/code-editor";
 import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
+import { LANGUAGE_MAP } from "@/lib/languages";
+import { detectLanguage } from "@/lib/detect-language";
+import { highlight } from "@/lib/shiki-client";
 
 const SAMPLE_CODE = `function calculateTotal(items) {
   var total = 0;
@@ -23,13 +26,53 @@ module.exports = calculateTotal;`;
 export function HomeClient() {
   const [code, setCode] = useState(SAMPLE_CODE);
   const [roastMode, setRoastMode] = useState(true);
+  const [language, setLanguage] = useState("javascript");
+  const [isAutoDetected, setIsAutoDetected] = useState(false);
+  const [highlightedHtml, setHighlightedHtml] = useState("");
+
+  const filename = `paste${LANGUAGE_MAP[language]?.extension ?? ".js"}`;
+
+  useEffect(() => {
+    let cancelled = false;
+    highlight(code, language).then((html) => {
+      if (!cancelled) setHighlightedHtml(html);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [code, language]);
+
+  function handlePaste(e: React.ClipboardEvent<HTMLTextAreaElement>) {
+    const text = e.clipboardData.getData("text");
+    if (!text) return;
+    const { lang, confidence } = detectLanguage(text);
+    if (confidence >= 5) {
+      setLanguage(lang);
+      setIsAutoDetected(true);
+    }
+  }
+
+  function handleLanguageChange(lang: string, isAuto: boolean) {
+    setLanguage(lang);
+    setIsAutoDetected(isAuto);
+  }
 
   return (
     <>
       {/* Code Editor */}
       <CodeEditorRoot className="w-[780px] h-[360px]">
-        <CodeEditorHeader filename="calculateTotal.js" />
-        <CodeEditorInput code={code} onChange={setCode} />
+        <CodeEditorHeader
+          filename={filename}
+          language={language}
+          isAutoDetected={isAutoDetected}
+          onLanguageChange={handleLanguageChange}
+        />
+        <CodeEditorInput
+          code={code}
+          onChange={setCode}
+          onPaste={handlePaste}
+          highlightedHtml={highlightedHtml}
+        />
       </CodeEditorRoot>
 
       {/* Actions Bar */}

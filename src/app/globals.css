@@ -3,42 +3,43 @@
 
 @theme {
   /* Accents */
-  --color-accent-green: #10B981;
-  --color-accent-red: #EF4444;
-  --color-accent-amber: #F59E0B;
-  --color-accent-cyan: #06B6D4;
+  --color-accent-green: #10b981;
+  --color-accent-red: #ef4444;
+  --color-accent-amber: #f59e0b;
+  --color-accent-cyan: #06b6d4;
 
   /* Backgrounds */
-  --color-bg-page: #0A0A0A;
-  --color-bg-surface: #0F0F0F;
-  --color-bg-elevated: #1A1A1A;
+  --color-bg-page: #0a0a0a;
+  --color-bg-surface: #0f0f0f;
+  --color-bg-elevated: #1a1a1a;
   --color-bg-input: #111111;
 
   /* Borders */
-  --color-border-primary: #2A2A2A;
-  --color-border-focus: #10B981;
+  --color-border-primary: #2a2a2a;
+  --color-border-focus: #10b981;
 
   /* Text */
-  --color-text-primary: #FAFAFA;
-  --color-text-secondary: #6B7280;
-  --color-text-tertiary: #4B5563;
+  --color-text-primary: #fafafa;
+  --color-text-secondary: #6b7280;
+  --color-text-tertiary: #4b5563;
 
   /* Syntax highlighting */
-  --color-syn-function: #FFC799;
-  --color-syn-keyword: #A0A0A0;
-  --color-syn-string: #99FFE4;
-  --color-syn-number: #FFC799;
-  --color-syn-operator: #A0A0A0;
-  --color-syn-property: #A0A0A0;
-  --color-syn-type: #FFC799;
-  --color-syn-variable: #FFFFFF;
+  --color-syn-function: #ffc799;
+  --color-syn-keyword: #a0a0a0;
+  --color-syn-string: #99ffe4;
+  --color-syn-number: #ffc799;
+  --color-syn-operator: #a0a0a0;
+  --color-syn-property: #a0a0a0;
+  --color-syn-type: #ffc799;
+  --color-syn-variable: #ffffff;
 
   /* Diff */
-  --color-diff-removed-bg: #1A0A0A;
-  --color-diff-added-bg: #0A1A0F;
+  --color-diff-removed-bg: #1a0a0a;
+  --color-diff-added-bg: #0a1a0f;
 
   /* Fonts */
-  --font-sans: var(--font-jetbrains-mono), "JetBrains Mono", ui-monospace, monospace;
+  --font-sans:
+    var(--font-jetbrains-mono), "JetBrains Mono", ui-monospace, monospace;
   --font-serif: "IBM Plex Mono", ui-monospace, monospace;
 
   /* Font size scale */
@@ -70,7 +71,6 @@
   --radius-md: 6px;
   --radius-lg: 8px;
   --radius-xl: 12px;
-
 }
 
 @layer base {
@@ -81,6 +81,10 @@
 
   * {
     box-sizing: border-box;
+  }
+
+  .rotate-icon {
+    @apply group-hover:rotate-6 ease-in-out duration-300;
   }
 
   ::-webkit-scrollbar {

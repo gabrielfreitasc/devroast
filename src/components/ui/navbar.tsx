@@ -33,7 +33,7 @@ export function NavbarLink({ className, children, ...props }: NavbarLinkProps) {
   return (
     <a
       className={tv({
-        base: "text-text-secondary text-sm hover:text-text-primary transition-colors duration-150 cursor-pointer",
+        base: "text-text-secondary text-sm hover:text-text-primary transition-colors duration-150 cursor-pointer flex items-center gap-2 group",
       })({ className })}
       {...props}
     >

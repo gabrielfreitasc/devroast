@@ -1,7 +1,8 @@
+import { Navbar, NavbarLink } from "@/components/ui/navbar";
 import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
+import { FaCrown } from "react-icons/fa";
 import "./globals.css";
-import { Navbar, NavbarLink } from "@/components/ui/navbar";
 
 const jetBrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -22,7 +23,9 @@ export default function RootLayout({
     <html lang="pt-BR" className={jetBrainsMono.variable}>
       <body className="bg-bg-page text-text-primary antialiased">
         <Navbar>
-          <NavbarLink href="/leaderboard">leaderboard</NavbarLink>
+          <NavbarLink href="/leaderboard">
+            <FaCrown className="rotate-icon" /> leaderboard
+          </NavbarLink>
         </Navbar>
         {children}
       </body>
