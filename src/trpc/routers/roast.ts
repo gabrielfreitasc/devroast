@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { eq, asc } from "drizzle-orm";
 import { generateObject } from "ai";
-import { google } from "@ai-sdk/google";
+import { anthropic } from "@ai-sdk/anthropic";
 import { baseProcedure, createTRPCRouter } from "../init";
 import { roasts, analysisIssues, suggestedFixes } from "@/db/schema";
 import { buildPrompt } from "@/lib/prompts";
@@ -68,7 +68,7 @@ export const roastRouter = createTRPCRouter({
       });
 
       const { object: analysis } = await generateObject({
-        model: google("gemini-2.0-flash"),
+        model: anthropic("claude-haiku-4-5-20251001"),
         system,
         prompt: user,
         schema: roastAnalysisSchema,
