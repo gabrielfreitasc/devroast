@@ -27,7 +27,7 @@ function toDbLanguage(lang: string): (typeof DB_LANGUAGES)[number] | "other" {
 }
 
 const roastAnalysisSchema = z.object({
-  score: z.number().min(0).max(10),
+  score: z.number(),
   verdict: z.enum([
     "needs_serious_help",
     "getting_there",
