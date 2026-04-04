@@ -1,4 +1,5 @@
 import { type ComponentProps } from "react";
+import Link from "next/link";
 import { tv } from "tailwind-variants";
 
 const navbar = tv({
@@ -20,10 +21,10 @@ export function Navbar({ className, children, ...props }: NavbarProps) {
 
 export function NavbarLogo() {
   return (
-    <div className="flex items-center gap-2">
+    <Link href="/" className="flex items-center gap-2">
       <span className="text-accent-green text-2xl font-bold">&gt;</span>
       <span className="text-text-primary text-xl font-medium">devroast</span>
-    </div>
+    </Link>
   );
 }
 
