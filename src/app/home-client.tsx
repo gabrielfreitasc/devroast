@@ -35,6 +35,7 @@ export function HomeClient() {
   const [language, setLanguage] = useState("javascript");
   const [isAutoDetected, setIsAutoDetected] = useState(false);
   const [highlightedHtml, setHighlightedHtml] = useState("");
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const filename = `paste${LANGUAGE_MAP[language]?.extension ?? ".js"}`;
 
@@ -52,6 +53,9 @@ export function HomeClient() {
     trpc.roast.create.mutationOptions({
       onSuccess: (data) => {
         router.push(`/roast/${data.id}`);
+      },
+      onError: () => {
+        setSubmitError("// failed to roast — try again");
       },
     }),
   );
@@ -73,12 +77,8 @@ export function HomeClient() {
 
   function handleSubmit() {
     if (code.length > MAX_CODE_LENGTH || isPending) return;
-    createRoast({
-      code,
-      language,
-      lineCount: code.split("\n").length,
-      roastMode,
-    });
+    setSubmitError(null);
+    createRoast({ code, language, roastMode });
   }
 
   return (
@@ -106,14 +106,19 @@ export function HomeClient() {
           <span className="text-text-primary text-sm">roast mode</span>
           <span className="text-text-tertiary text-sm">// maximum sarcasm enabled</span>
         </div>
-        <Button
-          variant="primary"
-          size="lg"
-          disabled={code.length > MAX_CODE_LENGTH || isPending}
-          onClick={handleSubmit}
-        >
-          {isPending ? "$ processing..." : "$ roast_my_code"}
-        </Button>
+        <div className="flex flex-col items-end gap-1">
+          {submitError && (
+            <span className="text-accent-red text-xs">{submitError}</span>
+          )}
+          <Button
+            variant="primary"
+            size="lg"
+            disabled={code.length > MAX_CODE_LENGTH || isPending}
+            onClick={handleSubmit}
+          >
+            {isPending ? "$ processing..." : "$ roast_my_code"}
+          </Button>
+        </div>
       </div>
     </>
   );

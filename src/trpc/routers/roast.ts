@@ -79,11 +79,12 @@ export const roastRouter = createTRPCRouter({
       z.object({
         code: z.string().min(1).max(2000),
         language: z.string(),
-        lineCount: z.number().int().min(1),
         roastMode: z.boolean(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      const lineCount = input.code.split("\n").length;
+
       const { system, user } = buildPrompt({
         code: input.code,
         language: input.language,
@@ -109,7 +110,7 @@ export const roastRouter = createTRPCRouter({
       const raw = completion.choices[0]?.message?.content;
       if (!raw) throw new Error("Empty response from OpenAI");
 
-      const analysis = JSON.parse(raw) as {
+      let analysis: {
         score: number;
         verdict: string;
         roastQuote: string;
@@ -122,47 +123,58 @@ export const roastRouter = createTRPCRouter({
         suggestedFix: { fixedCode: string };
       };
 
-      const [roast] = await ctx.db
-        .insert(roasts)
-        .values({
-          code: input.code,
-          language: toDbLanguage(input.language),
-          lineCount: input.lineCount,
-          roastMode: input.roastMode,
-          score: analysis.score.toFixed(1),
-          verdict: analysis.verdict as
-            | "needs_serious_help"
-            | "getting_there"
-            | "surprisingly_decent"
-            | "actually_good"
-            | "clean_code",
-          roastQuote: analysis.roastQuote,
-        })
-        .returning({ id: roasts.id });
-
-      if (!roast) throw new Error("Failed to insert roast");
-
-      if (analysis.analysisIssues.length > 0) {
-        await ctx.db.insert(analysisIssues).values(
-          analysis.analysisIssues.map((issue) => ({
-            roastId: roast.id,
-            severity: issue.severity as "critical" | "warning" | "good",
-            title: issue.title,
-            description: issue.description,
-            sortOrder: issue.sortOrder,
-          })),
-        );
+      try {
+        analysis = JSON.parse(raw);
+      } catch {
+        throw new Error("Failed to parse OpenAI response");
       }
 
       const diff = generateDiff(input.code, analysis.suggestedFix.fixedCode);
-      await ctx.db.insert(suggestedFixes).values({
-        roastId: roast.id,
-        originalCode: input.code,
-        fixedCode: analysis.suggestedFix.fixedCode,
-        diff,
+
+      const roastId = await ctx.db.transaction(async (tx) => {
+        const [roast] = await tx
+          .insert(roasts)
+          .values({
+            code: input.code,
+            language: toDbLanguage(input.language),
+            lineCount,
+            roastMode: input.roastMode,
+            score: analysis.score.toFixed(1),
+            verdict: analysis.verdict as
+              | "needs_serious_help"
+              | "getting_there"
+              | "surprisingly_decent"
+              | "actually_good"
+              | "clean_code",
+            roastQuote: analysis.roastQuote,
+          })
+          .returning({ id: roasts.id });
+
+        if (!roast) throw new Error("Failed to insert roast");
+
+        if (analysis.analysisIssues.length > 0) {
+          await tx.insert(analysisIssues).values(
+            analysis.analysisIssues.map((issue) => ({
+              roastId: roast.id,
+              severity: issue.severity as "critical" | "warning" | "good",
+              title: issue.title,
+              description: issue.description,
+              sortOrder: issue.sortOrder,
+            })),
+          );
+        }
+
+        await tx.insert(suggestedFixes).values({
+          roastId: roast.id,
+          originalCode: input.code,
+          fixedCode: analysis.suggestedFix.fixedCode,
+          diff,
+        });
+
+        return roast.id;
       });
 
-      return { id: roast.id };
+      return { id: roastId };
     }),
 
   getById: baseProcedure
