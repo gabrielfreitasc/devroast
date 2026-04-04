@@ -41,7 +41,7 @@ const roastAnalysisSchema = z.object({
       severity: z.enum(["critical", "warning", "good"]),
       title: z.string(),
       description: z.string(),
-      sortOrder: z.number().int(),
+      sortOrder: z.number(),
     }),
   ),
   suggestedFix: z.object({
