@@ -1,8 +1,9 @@
 import { z } from "zod";
 import { eq, asc } from "drizzle-orm";
+import { generateObject } from "ai";
+import { google } from "@ai-sdk/google";
 import { baseProcedure, createTRPCRouter } from "../init";
 import { roasts, analysisIssues, suggestedFixes } from "@/db/schema";
-import { openai } from "@/lib/openai";
 import { buildPrompt } from "@/lib/prompts";
 import { generateDiff } from "@/lib/diff";
 
@@ -25,53 +26,28 @@ function toDbLanguage(lang: string): (typeof DB_LANGUAGES)[number] | "other" {
     : "other";
 }
 
-const roastAnalysisSchema = {
-  type: "object",
-  properties: {
-    score: { type: "number" },
-    verdict: {
-      type: "string",
-      enum: [
-        "needs_serious_help",
-        "getting_there",
-        "surprisingly_decent",
-        "actually_good",
-        "clean_code",
-      ],
-    },
-    roastQuote: { type: "string" },
-    analysisIssues: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          severity: { type: "string", enum: ["critical", "warning", "good"] },
-          title: { type: "string" },
-          description: { type: "string" },
-          sortOrder: { type: "integer" },
-        },
-        required: ["severity", "title", "description", "sortOrder"],
-        additionalProperties: false,
-      },
-    },
-    suggestedFix: {
-      type: "object",
-      properties: {
-        fixedCode: { type: "string" },
-      },
-      required: ["fixedCode"],
-      additionalProperties: false,
-    },
-  },
-  required: [
-    "score",
-    "verdict",
-    "roastQuote",
-    "analysisIssues",
-    "suggestedFix",
-  ],
-  additionalProperties: false,
-} as const;
+const roastAnalysisSchema = z.object({
+  score: z.number().min(0).max(10),
+  verdict: z.enum([
+    "needs_serious_help",
+    "getting_there",
+    "surprisingly_decent",
+    "actually_good",
+    "clean_code",
+  ]),
+  roastQuote: z.string(),
+  analysisIssues: z.array(
+    z.object({
+      severity: z.enum(["critical", "warning", "good"]),
+      title: z.string(),
+      description: z.string(),
+      sortOrder: z.number().int(),
+    }),
+  ),
+  suggestedFix: z.object({
+    fixedCode: z.string(),
+  }),
+});
 
 export const roastRouter = createTRPCRouter({
   create: baseProcedure
@@ -91,43 +67,12 @@ export const roastRouter = createTRPCRouter({
         roastMode: input.roastMode,
       });
 
-      const completion = await openai.chat.completions.create({
-        model: "gpt-4.1-nano",
-        messages: [
-          { role: "system", content: system },
-          { role: "user", content: user },
-        ],
-        response_format: {
-          type: "json_schema",
-          json_schema: {
-            name: "roast_analysis",
-            strict: true,
-            schema: roastAnalysisSchema,
-          },
-        },
+      const { object: analysis } = await generateObject({
+        model: google("gemini-2.0-flash"),
+        system,
+        prompt: user,
+        schema: roastAnalysisSchema,
       });
-
-      const raw = completion.choices[0]?.message?.content;
-      if (!raw) throw new Error("Empty response from OpenAI");
-
-      let analysis: {
-        score: number;
-        verdict: string;
-        roastQuote: string;
-        analysisIssues: {
-          severity: string;
-          title: string;
-          description: string;
-          sortOrder: number;
-        }[];
-        suggestedFix: { fixedCode: string };
-      };
-
-      try {
-        analysis = JSON.parse(raw);
-      } catch {
-        throw new Error("Failed to parse OpenAI response");
-      }
 
       const diff = generateDiff(input.code, analysis.suggestedFix.fixedCode);
 
