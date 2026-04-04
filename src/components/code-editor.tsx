@@ -77,7 +77,7 @@ export function CodeEditorInput({
   const contentHeight = `${lineCount * 24 + 24}px`; // 24px per line (leading-6) + 24px padding
 
   return (
-    <div className={tv({ base: "flex flex-col" })({ className })}>
+    <div className={tv({ base: "flex flex-row" })({ className })}>
       {/* Line numbers */}
       <div
         className="flex flex-col items-end w-12 px-3 bg-bg-input shrink-0 select-none pt-3"

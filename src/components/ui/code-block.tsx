@@ -1,6 +1,7 @@
 import { type ComponentProps } from "react";
 import { codeToHtml, type BundledLanguage } from "shiki";
 import { tv } from "tailwind-variants";
+import { unstable_cacheLife as cacheLife } from "next/cache";
 
 const codeBlockRoot = tv({
   base: "rounded-lg border border-border-primary bg-bg-input overflow-hidden",
@@ -42,6 +43,8 @@ type CodeBlockCodeProps = {
 };
 
 export async function CodeBlockCode({ code, lang = "javascript", className }: CodeBlockCodeProps) {
+  "use cache";
+  cacheLife("hours");
   const html = await codeToHtml(code, {
     lang,
     theme: "vesper",

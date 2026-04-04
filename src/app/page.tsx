@@ -1,19 +1,8 @@
+import { Suspense } from "react";
 import { HomeClient } from "./home-client";
-import {
-  LeaderboardRowRoot,
-  LeaderboardRowRank,
-  LeaderboardRowScore,
-  LeaderboardRowCode,
-  LeaderboardRowLanguage,
-} from "@/components/leaderboard-row";
 import { Button } from "@/components/ui/button";
 import { StatsDisplay } from "@/components/stats-display";
-
-const LEADERBOARD_DATA = [
-  { rank: 1, score: 1.2, codePreview: "eval(userInput + '= process')", language: "javascript" },
-  { rank: 2, score: 1.8, codePreview: "SELECT * FROM users WHERE 1=1", language: "sql" },
-  { rank: 3, score: 2.1, codePreview: "goto start; // who needs loops", language: "basic" },
-];
+import { ShameLeaderboard, ShameLeaderboardSkeleton } from "@/components/shame-leaderboard";
 
 export default function Home() {
   return (
@@ -45,28 +34,9 @@ export default function Home() {
           <Button variant="link" size="sm">view_all</Button>
         </div>
 
-        {/* Table */}
-        <div className="rounded-lg border border-border-primary overflow-hidden">
-          {/* Table header */}
-          <div className="flex items-center px-4 py-3 bg-bg-elevated border-b border-border-primary">
-            <span className="w-[60px] text-text-tertiary text-xs">#</span>
-            <span className="w-[80px] text-text-tertiary text-xs">score</span>
-            <span className="flex-1 text-text-tertiary text-xs">code</span>
-            <span className="w-[100px] text-text-tertiary text-xs text-right">lang</span>
-          </div>
-
-          {/* Rows */}
-          {LEADERBOARD_DATA.map((row) => (
-            <LeaderboardRowRoot key={row.rank}>
-              <LeaderboardRowRank>#{row.rank}</LeaderboardRowRank>
-              <LeaderboardRowScore score={row.score} />
-              <LeaderboardRowCode>{row.codePreview}</LeaderboardRowCode>
-              <LeaderboardRowLanguage>{row.language}</LeaderboardRowLanguage>
-            </LeaderboardRowRoot>
-          ))}
-        </div>
-
-        <span className="text-text-tertiary text-xs">showing top 3 of 2,847</span>
+        <Suspense fallback={<ShameLeaderboardSkeleton />}>
+          <ShameLeaderboard />
+        </Suspense>
       </div>
 
     </main>
