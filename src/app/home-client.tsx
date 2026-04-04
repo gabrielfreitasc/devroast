@@ -1,6 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import { useTRPC } from "@/trpc/client";
 import { CodeEditorRoot, CodeEditorHeader, CodeEditorInput, MAX_CODE_LENGTH } from "@/components/code-editor";
 import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
@@ -24,6 +27,9 @@ const SAMPLE_CODE = `function calculateTotal(items) {
 module.exports = calculateTotal;`;
 
 export function HomeClient() {
+  const router = useRouter();
+  const trpc = useTRPC();
+
   const [code, setCode] = useState(SAMPLE_CODE);
   const [roastMode, setRoastMode] = useState(true);
   const [language, setLanguage] = useState("javascript");
@@ -42,6 +48,14 @@ export function HomeClient() {
     };
   }, [code, language]);
 
+  const { mutate: createRoast, isPending } = useMutation(
+    trpc.roast.create.mutationOptions({
+      onSuccess: (data) => {
+        router.push(`/roast/${data.id}`);
+      },
+    }),
+  );
+
   function handlePaste(e: React.ClipboardEvent<HTMLTextAreaElement>) {
     const text = e.clipboardData.getData("text");
     if (!text) return;
@@ -55,6 +69,16 @@ export function HomeClient() {
   function handleLanguageChange(lang: string, isAuto: boolean) {
     setLanguage(lang);
     setIsAutoDetected(isAuto);
+  }
+
+  function handleSubmit() {
+    if (code.length > MAX_CODE_LENGTH || isPending) return;
+    createRoast({
+      code,
+      language,
+      lineCount: code.split("\n").length,
+      roastMode,
+    });
   }
 
   return (
@@ -82,7 +106,14 @@ export function HomeClient() {
           <span className="text-text-primary text-sm">roast mode</span>
           <span className="text-text-tertiary text-sm">// maximum sarcasm enabled</span>
         </div>
-        <Button variant="primary" size="lg" disabled={code.length > MAX_CODE_LENGTH}>$ roast_my_code</Button>
+        <Button
+          variant="primary"
+          size="lg"
+          disabled={code.length > MAX_CODE_LENGTH || isPending}
+          onClick={handleSubmit}
+        >
+          {isPending ? "$ processing..." : "$ roast_my_code"}
+        </Button>
       </div>
     </>
   );
