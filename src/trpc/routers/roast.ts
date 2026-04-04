@@ -92,7 +92,7 @@ export const roastRouter = createTRPCRouter({
       });
 
       const completion = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
+        model: "gpt-4.1-nano",
         messages: [
           { role: "system", content: system },
           { role: "user", content: user },
