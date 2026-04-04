@@ -28,6 +28,25 @@ src/
 - `@source "../../src/**/*.{ts,tsx}"` ensures all files are scanned in dev + build
 - Do NOT add `--spacing-*` to `@theme` — it collides with all spacing utilities in v4
 
+## Data Fetching Patterns
+
+### tRPC — queries independentes em paralelo
+Sempre que um procedimento precisar executar duas ou mais queries sem dependência entre elas, use `await Promise.all(...)` para rodá-las em paralelo.
+
+```ts
+// ✅ paralelo — ambas as queries disparam ao mesmo tempo
+const [top, total] = await Promise.all([
+  ctx.db.select({ ... }).from(roasts).orderBy(asc(roasts.score)).limit(3),
+  ctx.db.select({ count: count() }).from(roasts),
+]);
+
+// ❌ sequencial desnecessário — `total` espera `top` terminar sem motivo
+const top   = await ctx.db.select(...).from(roasts)...;
+const total = await ctx.db.select({ count: count() }).from(roasts);
+```
+
+Isso se aplica a qualquer combinação de queries Drizzle, chamadas a APIs externas ou outras operações assíncronas independentes dentro de um mesmo handler ou Server Component.
+
 ## Key Patterns
 ```tsx
 // Server Component (default)
