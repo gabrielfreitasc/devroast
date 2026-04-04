@@ -4,10 +4,10 @@ import { unstable_cacheLife as cacheLife } from "next/cache";
 import { caller } from "@/trpc/server";
 import { LeaderboardCollapsibleRow } from "@/components/leaderboard-collapsible-row";
 
-export async function ShameLeaderboard() {
+export async function FullLeaderboard() {
   "use cache";
   cacheLife("hours");
-  const { rows, total } = await caller.leaderboard.top3();
+  const { rows, total } = await caller.leaderboard.top20();
 
   const rowsWithHtml = await Promise.all(
     rows.map(async (row) => {
@@ -46,13 +46,13 @@ export async function ShameLeaderboard() {
       </div>
 
       <span className="text-text-tertiary text-xs">
-        showing top 3 of {total.toLocaleString("en-US")}
+        showing top {rows.length} of {total.toLocaleString("en-US")}
       </span>
     </>
   );
 }
 
-export function ShameLeaderboardSkeleton() {
+export function FullLeaderboardSkeleton() {
   return (
     <>
       <div className="rounded-lg border border-border-primary overflow-hidden animate-pulse">
@@ -64,7 +64,7 @@ export function ShameLeaderboardSkeleton() {
           <span className="text-text-tertiary text-xs">lang · lines</span>
         </div>
 
-        {[1, 2, 3].map((i) => (
+        {Array.from({ length: 5 }).map((_, i) => (
           <div key={i} className="flex items-center justify-between px-5 py-4 border-b border-border-primary last:border-0">
             <div className="flex items-center gap-4">
               <div className="w-6 h-4 bg-bg-elevated rounded" />

@@ -1,14 +1,6 @@
-import { Suspense } from "react";
-import type { Metadata } from "next";
-import { FullLeaderboard, FullLeaderboardSkeleton } from "@/components/full-leaderboard";
+import { FullLeaderboardSkeleton } from "@/components/full-leaderboard";
 
-export const metadata: Metadata = {
-  title: "Shame Leaderboard · DevRoast",
-  description:
-    "The most roasted code on the internet. Hall of shame for the worst code submissions.",
-};
-
-export default async function LeaderboardPage() {
+export default function LeaderboardLoading() {
   return (
     <main className="max-w-[1440px] mx-auto px-20 py-10">
       {/* Page header */}
@@ -24,11 +16,9 @@ export default async function LeaderboardPage() {
         </p>
       </div>
 
-      {/* Leaderboard table */}
+      {/* Leaderboard table skeleton */}
       <div className="flex flex-col gap-4">
-        <Suspense fallback={<FullLeaderboardSkeleton />}>
-          <FullLeaderboard />
-        </Suspense>
+        <FullLeaderboardSkeleton />
       </div>
     </main>
   );
