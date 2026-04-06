@@ -18,12 +18,28 @@ import { caller } from "@/trpc/server";
 import { LANGUAGE_MAP } from "@/lib/languages";
 import type { BundledLanguage } from "shiki";
 
-export const metadata: Metadata = {
-  title: "Roast Result · DevRoast",
-  description: "See how badly your code got roasted.",
-};
-
 type Props = { params: Promise<{ id: string }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+  const roast = await caller.roast.getById({ id });
+
+  if (!roast) return {};
+
+  return {
+    title: `${roast.score}/10 · DevRoast`,
+    description: roast.roastQuote,
+    openGraph: {
+      title: `${roast.score}/10 · DevRoast`,
+      description: roast.roastQuote,
+      images: [`/api/og/${id}`],
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: [`/api/og/${id}`],
+    },
+  };
+}
 
 export default async function RoastResultPage({ params }: Props) {
   const { id } = await params;
